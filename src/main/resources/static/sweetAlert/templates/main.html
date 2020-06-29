@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>ЦИКЛОН</title>
+    <link rel="stylesheet" href="../static/css/main.css" th:href="@{/static/css/main.css}">
+</head>
+<body>
+<header>
+
+    <div class="container">
+        <img src="../static/images/logo.png" th:src="@{/images/logo.png}" alt="" class="logo">
+        <nav>
+            <ul class="menu">
+                <li>
+                    <a href="#">О нас</a>
+                </li>
+                <li>
+                    <a href="#">Каталог</a>
+                </li>
+                <li sec:authorize="hasAuthority('Admin')">
+                    <a  href="#">Администрирование</a>
+                </li>
+            </ul>
+            <a class="logout"  sec:authentication="name" id="user-name"></a>
+        </nav>
+    </div>
+    <form method="post" th:action="@{/logout}">
+        <button class="logout-block" id="log-block" type="submit">Выйти</button>
+    </form>
+</header>
+<section class="first">
+    <div class="container">
+    </div>
+</section>
+<section class="second">
+    <div class="container">
+        <h2>Список наших товаров</h2>
+        <div class="form">
+            <form>
+                <input placeholder="Искать по названию..." type="search">
+                <button></button>
+            </form>
+        </div>
+        <div class="sorting">
+            <label for="sorting">Сортировать:</label>
+            <select name="sorting">
+                <option>Сортировать...</option>
+                <option value="от дешевых к дорогим">от дешевых к дорогим</option>
+                <option value="от дорогих к дешевым">от дорогих к дешевым</option>
+                <option value="по популярности">по популярности</option>
+            </select>
+        </div>
+    </div>
+</section>
+<section class="third">
+    <div class="contain">
+        <div class="product-item-1">
+            <img src="../static/images/conditioner.png" th:src="@{/images/conditioner.png}" alt="" class="conditioner">
+            <div class="product-list-1">
+                <h3>Кондиционер LEBERG LBS-FRA10/LBU-FRA10</h3>
+                <dl>
+                    <dt>Вид</dt>
+                    <dd>Сплит-система</dd>
+                    <dt>Wi-fi модуль</dt>
+                    <dd>Нет</dd>
+                    <dt>Площадь</dt>
+                    <dd>22 кв.м</dd>
+                    <dt>Цвет</dt>
+                    <dd>Белый</dd>
+                    <dt>Страна-производитель</dt>
+                    <dd>Китай</dd>
+                </dl>
+                <span class="price">225$</span>
+                <a href="" class="button">ADD</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+<footer>
+    <div class="container">
+    </div>
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function()
+    {
+        $("#log-block").css("display","none");
+        $("#user-name").on('click',function () {
+            $("#log-block").toggle()
+        });
+    });
+</script>
+</body>
+</html>

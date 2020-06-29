@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registration</title>
+    <link rel="stylesheet" href="../static/css/LoginPage.css" th:href="@{/css/LoginPage.css}" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400&display=swap" rel="stylesheet"/>
+</head>
+<body>
+<!--/*@thymesVar id="user" type="com.Labs.Patterns.dto.User"*/-->
+<form method="post" class="form" action="/registration"  th:action="@{/registration}"  th:object="${user}">
+    <h1 class="form__title">Sign up</h1>
+    <div class="form__group">
+        <input class="form__input" name="nickname" th:field="*{nickname}" placeholder=" " type="text" required/>
+        <label class="form__label">Nickname</label>
+    </div>
+    <div class="form__group">
+        <input class="form__input" name="password" th:field="*{password}"  placeholder=" " type="password" required/>
+        <label class="form__label">Password</label>
+    </div>
+    <div class="already__loggedIn">
+        <label>Already logged in?</label>
+        <a href="/login">Login</a>
+    </div>
+    <button type="submit" class="form__button" >Register</button>
+</form>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+<script th:if="${userExist}">
+Swal.fire({
+icon: 'error',
+title: 'Oops...',
+text: 'User with such an nickname already exist!'
+})
+</script>
+</body>
+</html>

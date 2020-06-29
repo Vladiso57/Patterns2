@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:sd="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Main</title>
+    <link rel="stylesheet"  th:href="@{/css/Main2.css}" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400&display=swap" rel="stylesheet"/>
+
+
+
+</head>
+<body>
+<header class="header">
+    <div class="container">
+        <div class="header__inner">
+            <div class="user">
+                <div class="user__avatar">
+                    <img src="https://placehold.it/57/333" alt="">
+                </div>
+                <div class="user__content">
+                    <div class="user__content__name"  sec:authentication="name"></div>
+                    <div class="user__content__role" sec:authentication="authorities">
+                    </div>
+                </div>
+            </div>
+            <nav class="nav">
+                <a href="#" class="nav__link">Main</a>
+                <a href="#" class="nav__link" sec:authorize="hasAuthority('ROLE_ADMIN')">Managment</a>
+                <a href="#" class="nav__link counter">Cart</a>
+                <form method="get" action="/logout" th:action="@{/logout}">
+                <button type="submit" class="logout">Logout</button>
+                </form>
+            </nav>
+        </div>
+    </div>
+</header>
+<form method="post" action="/" th:action="@{/}" th:object="${printer}">
+<div class="search">
+    <img class="search__img" src="../static/images/Search.svg" th:src="@{/images/Search.svg}"/>
+    <input type="text" class="search__text" placeholder="Find" name="manufacturer" th:field="*{manufacturer}"/>
+</div>
+</form>
+
+<div class="content__header">
+    <div class="content__theme">Printers</div>
+    <div class="content__nav">
+        <div class="content__nav__page">Page [[${currentPage}]] of [[${totalItems}]]</div>
+        <div class="buttons" >
+            <button th:if="${currentPage>0}" type="button"><a th:href="@{/(size=${5}, page=${currentPage - 1})}"><img src="../static/images/back.png" th:src="@{/images/back.png}"></a></button>
+            <button th:if="${currentPage<totalItems}" type="button"><a th:href="@{/(size=${5}, page=${currentPage + 1})}"><img src="../static/images/next.png" th:src="@{/images/next.png}"></a></button>
+        </div>
+    </div>
+</div>
+<div class="table__align">
+    <table class="table__content">
+        <thead class ="table__content__header">
+        <tr>
+            <th>MANUFACTURER</th>
+            <th>MODEL</th>
+            <th>PRINTING TECHNOLOGY</th>
+            <th>BLACK AND WHITE PRINT</th>
+            <th>PRICE</th>
+            <th>ACTIONS</th>
+        </tr>
+        </thead>
+        <tbody >
+
+
+        <tr class="printers__content" th:if="${existData}" th:each="printer : ${printersPage}" >
+            <td th:text="${printer.manufacturer}"></td>
+            <td th:text="${printer.model}">
+            <td th:text="${printer.printingTechnology}">
+            <td th:text="${printer.speedPrint}">
+            <td th:text="${printer.price}" class="price" >
+            <td>
+            <!--/*@thymesVar id="user" type="com.Labs.Patterns.dto.User"*/-->
+            <form method="get" th:action="@{/addToCart/{id}(id=${printer.idPrinter})}">
+                <div th:if="${notExistInCart}" class="to__cart" >
+                    <button type="submit" >
+                        Add to cart</button>
+                </div>
+            </form>
+            </td>
+
+        </tr>
+
+        <tr class="no__data" th:if="${noData}">
+            <td>There are no data to show</td>
+        </tr>
+        </tbody>
+
+    </table>
+    </form>
+</div>
+</body>
+</html>
